@@ -157,7 +157,7 @@
         global.push(sp.genomes[j]);
       }
     }
-    global.sort(function(a, b) { return a.fitness < b.fitness; });
+    global.sort(function(a, b) { return a.fitness - b.fitness; });
     for (var i = 0; i < global.length; ++ i) {
       global[i].globalRank = i;
     }
@@ -175,7 +175,7 @@
   Pool.prototype.cullSpecies = function(cutToOne) {
     for (var i = 0; i < this.species.length; ++ i) {
       var sp = this.species[i];
-      sp.genomes.sort(function(a, b) { return a.fitness > b.fitness; });
+      sp.genomes.sort(function(a, b) { return b.fitness - a.fitness; });
 
       var remaining = Math.ceil(sp.genomes.length / 2);
       if (cutToOne) remaining = 1;
@@ -189,7 +189,7 @@
     var survived = [];
     for (var i = 0; i < this.species.length; ++ i) {
       var sp = this.species[i];
-      sp.genomes.sort(function (a, b) {return a.fitness > b.fitness;});
+      sp.genomes.sort(function (a, b) {return b.fitness - a.fitness;});
 
       if (sp.genomes[0].fitness > sp.topFitness) {
         sp.topFitness = sp.genomes[0].fitness;
@@ -266,6 +266,31 @@
     }
     this.generation ++;
     // TODO save this generation
+
+    this.save("backup." + this.generation);
+  }
+
+  Pool.prototype.save = function(filename) {
+    var storage = {};
+
+    storage.generation = this.generation;
+    storage.maxFitness = this.maxFitness;
+    storage.species = [];
+    for (var i = 0; i < this.species.length; ++ i) {
+      storage.species.push(JSON.parse(this.species[i].pack()));
+    }
+    localStorage.setItem(filename, JSON.stringify(storage));
+  }
+
+  Pool.prototype.load = function(filename) {
+    var storage = JSON.parse(localStorage.getItem(filename));
+
+    this.generation = storage.generation;
+    this.maxFitness = storage.maxFitness;
+    this.species = [];
+    for (var i = 0; i < storage.species.length; ++ i) {
+      this.species.push(Species.unpack(JSON.stringify(storage.species[i])));
+    }
   }
 
   var Species = function() {
@@ -273,6 +298,29 @@
     this.staleness = 0;
     this.genomes = [];
     this.averageFitness = 0;
+  }
+
+  Species.prototype.pack = function() {
+    var storage = {};
+    storage.topFitness = this.topFitness;
+    storage.staleness = this.staleness;
+    storage.genomes = [];
+    for (var i = 0; i < this.genomes.length; ++ i) {
+      storage.genomes.push(JSON.parse(this.genomes[i].pack()));
+    }
+    return JSON.stringify(storage);
+  }
+
+  Species.unpack = function(packed) {
+    var storage = JSON.parse(packed);
+    var sp = new Species();
+    sp.topFitness = storage.topFitness;
+    sp.staleness = storage.staleness;
+    sp.genomes = [];
+    for (var i = 0; i < storage.genomes.length; ++ i) {
+      sp.genomes.push(Genomes.unpack(JSON.stringify(storage.genomes[i])));
+    }
+    return sp;
   }
 
   Species.prototype.calculateAverageFitness = function() {
@@ -319,6 +367,30 @@
 
   Genome.prototype.display = function() {
     var network = this.network;
+  }
+
+  Genome.prototype.pack = function() {
+    var storage = {};
+    storage.fitness = this.fitness;
+    storage.maxNeuron = this.maxNeuron;
+    storage.mutationRates = this.mutationRates;
+    storage.genes = [];
+    for (var i = 0; i < this.genes.length; ++ i) {
+      storage.genes.push(JSON.parse(this.genes[i].pack()));
+    }
+    return JSON.stringify(storage);
+  }
+
+  Genome.unpack = function(packed) {
+    var g = new Genome();
+    var storage = JSON.unpack(packed);
+    g.fitness = storage.fitness;
+    g.maxNeuron = storage.maxNeuron;
+    g.genes = [];
+    for (var i = 0; i < storage.genes.length; ++ i) {
+      g.genes.push(Gene.unpack(JSON.stringify(storage.genes[i])));
+    }
+    return g;
   }
 
   Genome.prototype.generateNetwork = function() {
@@ -611,6 +683,21 @@
     this.innovation = 0;
   }
 
+  Gene.prototype.pack = function() {
+    return JSON.stringify(this);
+  }
+
+  Gene.unpack = function(packed) {
+    var storage = JSON.parse(packed);
+    var g = new Gene;
+    g.into = storage.into;
+    g.out = storage.out;
+    g.weight = storage.weight;
+    g.enabled = storage.enabled;
+    g.innovation = storage.innovation;
+    return g;
+  }
+
   Gene.prototype.clone = function() {
     var gene = new Gene();
     gene.into = this.into;
@@ -708,6 +795,7 @@
   NeatEngine.prototype.initializeRun = function() {
     // TODO: reload game
     $('#start_button').trigger("click");
+    this.training = true;
     this.score = 0;
     this.pool.currentFrame = 0;
     this.timeout = TimeoutConstant;
@@ -819,7 +907,7 @@
     }
 
     this.timeout --;
-    var timeoutBonus = this.pool.currentFrame / 4;
+    var timeoutBonus = this.pool.currentFrame / 4 + this.score / 4;
     if (this.timeout + timeoutBonus <= 0 || !this.game.status) {
       var fitness = this.score - this.pool.currentFrame / 2;
       if (fitness == 0) fitness = -1;
@@ -879,6 +967,7 @@
   function stopAI() {
     if (tid !== undefined) clearInterval(tid);
     tid = undefined;
+    neat.training = false;
     // neat = undefined;
   }
 

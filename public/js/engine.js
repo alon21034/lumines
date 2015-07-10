@@ -64,7 +64,7 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 1000.0 * speedup;
+            dt = (now - lastTime) / 1000.0 * global.speedup;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -72,7 +72,7 @@ var Engine = (function(global) {
         if(game.status === true)
         {
             update(dt);
-            if (neat !== undefined) {
+            if (neat !== undefined && neat.training) {
               neat.takeOneStep();
             }
             global.frameId ++;
