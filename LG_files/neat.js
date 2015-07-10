@@ -28,7 +28,7 @@
 
   var TimeoutConstant = 50;
 
-  var MaxNodes = 10000;
+  var MaxNodes = 10000000;
 
   var inputKeys = ['left', 'up', 'right', 'down', 'space'];
 

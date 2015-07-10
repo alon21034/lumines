@@ -40,6 +40,15 @@ var NeatDataBase = function() {
     };
   };
 
+  this.resetDataBase = function() {
+    var transaction = neatDB.indexedDB.db.transaction(["generation"], "readwrite");
+    var store = transaction.objectStore("generation");
+    var request = store.clear();
+    request.onsuccess = function(e) {
+      console.log("done!");
+    }
+  }
+
   this.saveGeneration = function (pool) {
     // the @pool represents a generation
     var transaction = neatDB.indexedDB.db.transaction(["generation"], "readwrite");
