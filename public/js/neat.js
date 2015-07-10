@@ -318,7 +318,7 @@
     sp.staleness = storage.staleness;
     sp.genomes = [];
     for (var i = 0; i < storage.genomes.length; ++ i) {
-      sp.genomes.push(Genomes.unpack(JSON.stringify(storage.genomes[i])));
+      sp.genomes.push(Genome.unpack(JSON.stringify(storage.genomes[i])));
     }
     return sp;
   }
@@ -383,7 +383,7 @@
 
   Genome.unpack = function(packed) {
     var g = new Genome();
-    var storage = JSON.unpack(packed);
+    var storage = JSON.parse(packed);
     g.fitness = storage.fitness;
     g.maxNeuron = storage.maxNeuron;
     g.genes = [];
@@ -793,7 +793,6 @@
   }
 
   NeatEngine.prototype.initializeRun = function() {
-    // TODO: reload game
     $('#start_button').trigger("click");
     this.training = true;
     this.score = 0;

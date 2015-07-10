@@ -662,7 +662,7 @@ Bar.prototype.updateNextTarget = function() {
 
     this.nextTarget = this.nextTarget + Board.BLOCK_SIZE;
 
-    if(this.nextTarget > Board.BOARD_WIDTH + Board.BLOCK_SIZE/2)
+    if(this.nextTarget >= Board.BOARD_WIDTH + Board.BLOCK_SIZE/2)
     {
         this.nextTarget = Board.BLOCK_SIZE/2;
     }
@@ -708,6 +708,7 @@ Bar.prototype.clearBrick = function() {
 
     // console.log(this.nextTarget);
     var currentCol = (this.nextTarget - 15) / Board.BLOCK_SIZE;
+    if (currentCol >= Board.COL_NUM) currentCol = Board.COL_NUM - 1;
 
     // console.log(map.grid[currentCol]);
 
