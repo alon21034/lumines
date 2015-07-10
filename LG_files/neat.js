@@ -280,19 +280,24 @@
       storage.species.push(JSON.parse(this.species[i].pack()));
     }
 
+    storage.innovation = innovation.value();
     // localStorage.setItem(filename, JSON.stringify(storage));
-    neatDataBase.saveGeneration(this);
+    neatDataBase.saveGeneration({id: this.generation % 10,
+      packed: JSON.stringify(storage)});
   }
 
   Pool.prototype.load = function(id) {
     var caller = this;
-    neatDataBase.getGeneration(id, function(storage) {
+    neatDataBase.getGeneration(id, function(result) {
+      storage = JSON.parse(result.packed);
       caller.generation = storage.generation;
       caller.maxFitness = storage.maxFitness;
       caller.species = [];
       for (var i = 0; i < storage.species.length; ++ i) {
         caller.species.push(Species.unpack(JSON.stringify(storage.species[i])));
       }
+      $('#maxFitness').html("Max Fitness: " + Math.floor(storage.maxFitness));
+      innovation = new Innovation(storage.innovation);
       console.log("got it!");
     });
     /*

@@ -9,6 +9,7 @@ var NeatDataBase = function() {
   neatDB.indexedDB = {};
   neatDB.indexedDB.db = {};
 
+  this.indexedDB = neatDB.indexedDB;
   if ('webkitIndexedDB' in window) {
     window.IDBTransaction = window.webkitIDBTransaction;
     window.IDBKeyRange = window.webkitIDBKeyRange;
@@ -79,4 +80,35 @@ var NeatDataBase = function() {
 neatDataBase = new NeatDataBase();
 $(document).ready(function() {
   neatDataBase.open();
+  $('#update-download-list').click(function() {
+    var store = neatDataBase.indexedDB.db.transaction(["generation"]).objectStore("generation");
+    $('#download-list').html('');
+    store.openCursor().onsuccess = function (e) {
+      var cursor = e.target.result;
+      if (cursor) {
+        $('#download-list').append(
+          $("<option></option>").attr("value",cursor.key).text(cursor.key)); 
+        cursor.continue();
+      }
+    };
+  });
+  var downloadURL;
+  $('#create-link').click(function(e) {
+    var id;
+    $('#download-list option:selected').each(function() {
+      id = parseInt($(this).text());
+    });
+    var link = $('#download-link');
+    if (link.attr('href') !== undefined) {
+      window.URL.revokeObjectURL(link.attr('href'));
+    }
+
+    neatDataBase.getGeneration(id, function(result) {
+      var blob = new Blob([result.packed], {type: "octet/stream"});
+      link.attr('href', window.URL.createObjectURL(blob));
+      link.attr('download', id + ".txt");
+      link.text(id);
+    });
+  });
 });
+
