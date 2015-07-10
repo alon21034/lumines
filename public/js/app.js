@@ -1032,7 +1032,7 @@ Brick.prototype.collide = function() {
 
 
 Brick.prototype.handleInput = function(key) {
-
+    $('#key').html(key);
     if (this.display === true)
     {
         if (key == 'up') {

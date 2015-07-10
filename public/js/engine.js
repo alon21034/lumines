@@ -50,6 +50,9 @@ var Engine = (function(global) {
     div.appendChild(canvas);
     div.appendChild(nextBrickCanvas);
 
+    global.frameId = 0;
+    global.speedup = 5;
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -61,7 +64,7 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+            dt = (now - lastTime) / 1000.0 * speedup;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
@@ -69,7 +72,13 @@ var Engine = (function(global) {
         if(game.status === true)
         {
             update(dt);
-            render();
+            if (neat !== undefined) {
+              neat.takeOneStep();
+            }
+            global.frameId ++;
+            if (global.frameId % global.speedup == 0) {
+              render();
+            }
         }
 
         /* Set our lastTime variable which is used to determine the time delta
