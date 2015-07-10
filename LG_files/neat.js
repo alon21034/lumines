@@ -282,7 +282,7 @@
 
     storage.innovation = innovation.value();
     // localStorage.setItem(filename, JSON.stringify(storage));
-    neatDataBase.saveGeneration({id: this.generation % 10,
+    neatDataBase.saveGeneration({id: this.generation, // % 10,
       packed: JSON.stringify(storage)});
   }
 
@@ -993,6 +993,13 @@
     });
     $('#neat_stop').click(function() {
       stopAI();
+    });
+    $('#load-generation').click(function() {
+      var id;
+      $('#download-list option:selected').each(function() {
+        id = parseInt($(this).text());
+      });
+      neat.pool.load(id);
     });
   });
 /* })(); */

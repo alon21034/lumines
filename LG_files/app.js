@@ -41,6 +41,7 @@ var Game = function()
     this.status = true;
     this.renderNextFive = false;
     this.score = 0;
+    this.maxScore = 0;
     this.pause = false;
     this.pausetime = 0;
 }
@@ -104,7 +105,10 @@ Game.prototype.restart = function()
 Game.prototype.updateScore = function(colscore)
 {
     game.score  = game.score + colscore;
-    $("#score").html(game.score);
+    if (game.score > game.maxScore) {
+      game.maxScore = game.score;
+    }
+    $("#score").html(game.score + "/" + game.maxScore);
 }
 
 var Map = function(){
