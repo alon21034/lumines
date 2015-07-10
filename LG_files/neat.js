@@ -26,7 +26,7 @@
   var DisableMutationChance = 0.4;
   var EnableMutationChance = 0.2;
 
-  var TimeoutConstant = 40;
+  var TimeoutConstant = 50;
 
   var MaxNodes = 10000;
 
@@ -267,7 +267,7 @@
     this.generation ++;
     // TODO save this generation
 
-    this.save("backup." + this.generation);
+    this.save("backup");
   }
 
   Pool.prototype.save = function(filename) {
@@ -279,10 +279,23 @@
     for (var i = 0; i < this.species.length; ++ i) {
       storage.species.push(JSON.parse(this.species[i].pack()));
     }
-    localStorage.setItem(filename, JSON.stringify(storage));
+
+    // localStorage.setItem(filename, JSON.stringify(storage));
+    neatDataBase.saveGeneration(this);
   }
 
-  Pool.prototype.load = function(filename) {
+  Pool.prototype.load = function(id) {
+    var caller = this;
+    neatDataBase.getGeneration(id, function(storage) {
+      caller.generation = storage.generation;
+      caller.maxFitness = storage.maxFitness;
+      caller.species = [];
+      for (var i = 0; i < storage.species.length; ++ i) {
+        caller.species.push(Species.unpack(JSON.stringify(storage.species[i])));
+      }
+      console.log("got it!");
+    });
+    /*
     var storage = JSON.parse(localStorage.getItem(filename));
 
     this.generation = storage.generation;
@@ -291,6 +304,7 @@
     for (var i = 0; i < storage.species.length; ++ i) {
       this.species.push(Species.unpack(JSON.stringify(storage.species[i])));
     }
+    */
   }
 
   var Species = function() {
@@ -877,15 +891,15 @@
   }
 
   NeatEngine.prototype.getScore = function() {
-    var score = this.game.score * 10;
+    var score = this.game.score * 100;
     
     for (var col = 0; col < NUM_COL; ++ col) {
       for (var row = 0; row < NUM_ROW; ++ row) {
         if (this.map.grid[col][row] == 3 || this.map.grid[col][row] == 4) {
-          score += 2;
+          score += 50;
         }
         if (row < 5) {
-          score += 1;
+          score += 10;
         }
       }
     }
@@ -956,11 +970,9 @@
       neat = new NeatEngine(game, map, brick, bar);
     }
     neat.initializeRun();
-/*
-    tid = setInterval(function () {
-      neat.takeOneStep();
-    }, interval);
-*/
+    // tid = setInterval(function () { neat.takeOneStep(); }, interval);
+    // window.URL.revokeObjectURL
+    // window.URL.createObjectURL
   }
 
   function stopAI() {

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>Lumines Game</title>
+    <link rel="stylesheet" href="LG_files/style.css">
+
+    <!-- JQuery CDN -->
+    <script src="LG_files/analytics.js" async=""></script><script src="LG_files/jquery-1.js"></script>
+    <script src="LG_files/jquery-migrate-1.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="LG_files/bootstrap.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="LG_files/bootstrap-theme.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="LG_files/bootstrap.js"></script>
+    <script src="LG_files/resources.js"></script>
+    <script src="LG_files/app.js"></script>
+    <script src="LG_files/neat-db.js"></script>
+    <script src="LG_files/neat.js"></script>
+</head>
+<body>
+
+  <div class="col-md-9 col-md-offset-1">
+    <p id="message" class="col-md-9" style="font-size: 250%; width: 100%; margin-top: 5px; margin-bottom: 10px">Times up!</p>
+    <div class="row" style="margin-left:0px; margin-right:0px">
+      <div class="col-md-4">
+        <p id="scoretext" style="font-size:200%;"> Current Score </p>
+        <p id="score" style="font-size:300%">35</p>
+        <span id="maxFitness"></span><br />
+        <span id="neat_msg"></span><br />
+      </div>
+      <div class="col-md-4">
+        <p style="font-size:200%;"> Remaining Time </p>
+        <p id="time" style="font-size:300%">0</p>
+        <p id="key"></p>
+      </div>
+      <div class="col-md-4">
+        <button id="start_button" class="btn btn-primary" style="width: 100%;">Restart</button>
+        <button id="pause_button" class="btn btn-primary" style="width: 100%">Pause</button>
+        <button id="neat_run" class="btn btn-primary" style="width:40%">Envolve</button>
+        <button id="neat_stop" class="btn btn-primary" style="width:40%">Stop</button>
+        <input class="form-control text-centered" id="player_name" placeholder="Please Enter Your Name" style="width: 100%" type="text">
+      </div>
+
+    </div>
+  </div>
+  <div class="wrapper row" style="margin-top: 3%; margin-left:0px; margin-right:0px">
+    <div id="game-arena" class="center" style="float: left; margin-left: 20%">
+    </div>
+    <div id="scoreboard" style="width: 350px; height: 360px; float: left; margin-bottom: 0px"><object data="LG_files/list.html"></object></div>
+  </div>
+  <p> Control: Arrow keys and space. Only support Chrome and Firefox.  
+  </p><div> <a href="javascript:fbShare('http://lumines.herokuapp.com/',%20'Fb%20Share',%20'Facebook%20share%20popup',%20'http://goo.gl/dS52U',%20520,%20350)">Share</a>  </div>
+
+
+
+
+
+<script>
+/*
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-64881916-1', 'auto');
+  ga('send', 'pageview');
+*/
+</script>
+
+<script> 
+  $(function(){
+    $("#scoreboard").html('<object data="/list"/>');
+  });
+</script> 
+<script src="LG_files/engine.js"></script>
+
+</body></html>

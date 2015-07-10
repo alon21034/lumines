@@ -64,7 +64,7 @@ Game.prototype.resume = function()
 Game.prototype.gameOver = function(type)
 {
 
-    console.log("game over");
+    // console.log("game over");
 
     if (type === "dead")
     {
@@ -357,8 +357,8 @@ Map.prototype.changeBrickAddScoreGrid = function(changeX, changeY){
 
 var FallingBrick = function(){
 
-    this.sprite1 = "images/gray_30_30.png";
-    this.sprite2 = "images/orange_30_30.png";
+    this.sprite1 = "https://lumines.herokuapp.com/images/gray_30_30.png";
+    this.sprite2 = "https://lumines.herokuapp.com/images/orange_30_30.png";
 
     this.display = false;
     this.speed = 1500;
@@ -628,7 +628,7 @@ var Bar = function(){
     this.x = 0;
     this.y = Board.MAP_OFFSET;
     this.speed = 0;
-    this.sprite = "images/slidebar.png"
+    this.sprite = "https://lumines.herokuapp.com/images/slidebar.png"
 }
 
 
@@ -662,7 +662,7 @@ Bar.prototype.updateNextTarget = function() {
 
     this.nextTarget = this.nextTarget + Board.BLOCK_SIZE;
 
-    if(this.nextTarget >= Board.BOARD_WIDTH + Board.BLOCK_SIZE/2)
+    if(this.nextTarget > Board.BOARD_WIDTH + Board.BLOCK_SIZE/2)
     {
         this.nextTarget = Board.BLOCK_SIZE/2;
     }
@@ -820,10 +820,10 @@ var Brick = function(){
     // this.setRandomFive();
 
 
-    this.sprite1 = "images/gray_30_30.png";
-    this.sprite2 = "images/orange_30_30.png";
-    this.sprite1_small = "images/gray_20_20.png";
-    this.sprite2_small = "images/orange_20_20.png";
+    this.sprite1 = "https://lumines.herokuapp.com/images/gray_30_30.png";
+    this.sprite2 = "https://lumines.herokuapp.com/images/orange_30_30.png";
+    this.sprite1_small = "https://lumines.herokuapp.com/images/gray_20_20.png";
+    this.sprite2_small = "https://lumines.herokuapp.com/images/orange_20_20.png";
     this.speed = 0;
     // this.returnToStart();
     // this.x = (Board.COL_NUM/2) * Board.BLOCK_SIZE - Board.BLOCK_SIZE;
@@ -848,12 +848,14 @@ Brick.prototype.setRandomFive = function() {
             }
         }
     }
+    /*
     console.log("setRandomFive");
     console.log(this.nextFive[0]);
     console.log(this.nextFive[1]);
     console.log(this.nextFive[2]);
     console.log(this.nextFive[3]);
     console.log(this.nextFive[4]);
+    */
 
 }
 
@@ -939,7 +941,7 @@ Brick.prototype.returnToStart = function() {
     this.speed = 15;
     this.setRandomBrick();
     this.x = (Board.COL_NUM/2) * Board.BLOCK_SIZE - Board.BLOCK_SIZE;
-    this.y = -30;
+    this.y = -15;
     this.col = 7;
     this.display = true;
 
@@ -965,17 +967,13 @@ Brick.prototype.render = function() {
 
     if (this.display === true)
     {
-
-        var renderY = Math.ceil(this.y / Board.BLOCK_SIZE) * Board.BLOCK_SIZE;
-
         for(var i = 0; i < BRICK_OFFSET.length; i++)
         {
 
-
             var currentX = this.x + BRICK_OFFSET[i][0];
-            var currentY = renderY + BRICK_OFFSET[i][1];
-
-
+            var currentY = this.y + BRICK_OFFSET[i][1];
+            // console.log(currentX);
+            // console.log(currentY);
 
             if(this.color[i] === 0)
             {
@@ -1094,9 +1092,9 @@ $(document).ready(function() {
     $('#time').html("90");
 
     jQuery(function ($) {
-    var fiveMinutes = 89,
-        display = $('#time');
-    startTimer(fiveMinutes, display);
+      var fiveMinutes = 89;
+      var display = $('#time');
+      startTimer(fiveMinutes, display);
     });
 
     // brick.returnToStart();
@@ -1168,9 +1166,9 @@ function fbShare(url, title, descr, image, winWidth, winHeight) {
 // Database
 
 var save_to_db = function(score, name) {
-    console.log("save_to_db: " + score + "  " + name);
-    console.log(window.location.host + "/save");
-    xmlhttp.open("POST", location.protocol + "//" + window.location.host + "/save", true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("score=" + score + "&name=" + name);
+    //console.log("save_to_db: " + score + "  " + name);
+    //console.log(window.location.host + "/save");
+   // xmlhttp.open("POST", location.protocol + "//" + window.location.host + "/save", true);
+   // xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+   // xmlhttp.send("score=" + score + "&name=" + name);
 }

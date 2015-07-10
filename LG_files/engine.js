@@ -51,7 +51,7 @@ var Engine = (function(global) {
     div.appendChild(nextBrickCanvas);
 
     global.frameId = 0;
-    global.speedup = 5;
+    global.speedup = 1;
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -64,21 +64,23 @@ var Engine = (function(global) {
          * computer is) - hurray time!
          */
         var now = Date.now(),
-            dt = (now - lastTime) / 1000.0 * global.speedup;
+            dt = (now - lastTime) / 1000.0;
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
         if(game.status === true)
         {
+          for (var i = 0; i < global.speedup; ++ i) {
             update(dt);
             if (neat !== undefined && neat.training) {
               neat.takeOneStep();
             }
-            global.frameId ++;
-            if (global.frameId % global.speedup == 0) {
+          }
+          //  global.frameId ++;
+          //  if (global.frameId % global.speedup == 0) {
               render();
-            }
+          //  }
         }
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -140,16 +142,16 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png',
-                'images/blue_30_30.png'
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png',
+                'https://lumines.herokuapp.com/images/blue_30_30.png'
             ],
             numRows = Board.ROW_NUM+2,
             numCols = Board.COL_NUM,
@@ -159,7 +161,7 @@ var Engine = (function(global) {
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
          */
-         ctx2.drawImage(Resources.get('images/nextbrickBG.png'), 0, 0);
+         ctx2.drawImage(Resources.get('https://lumines.herokuapp.com/images/nextbrickBG.png'), 0, 0);
          if (game.renderNextFive)
          {
             brick.renderNextFiveBrick();
@@ -179,7 +181,7 @@ var Engine = (function(global) {
 
                 if (row === 10 || row === 11)
                 {
-                    ctx.drawImage(Resources.get('images/blue_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
+                    ctx.drawImage(Resources.get('https://lumines.herokuapp.com/images/blue_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
                 }
 
                 else if (map.grid[col][row] === 0)
@@ -188,11 +190,11 @@ var Engine = (function(global) {
                 }
                 else if (map.grid[col][row] === 1)
                 {
-                    ctx.drawImage(Resources.get('images/gray_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
+                    ctx.drawImage(Resources.get('https://lumines.herokuapp.com/images/gray_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
                 }
                 else if (map.grid[col][row] === 2)
                 {
-                    ctx.drawImage(Resources.get('images/orange_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
+                    ctx.drawImage(Resources.get('https://lumines.herokuapp.com/images/orange_30_30.png'), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
                 }
                 else if (map.grid[col][row] === 3)
                 {
@@ -200,23 +202,23 @@ var Engine = (function(global) {
                     var renderImage;
                     if (map.typeGrid[col][row]===1)
                     {
-                        renderImage = "images/dark_gray_30_30_top_left.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_gray_30_30_top_left.png";
                     }
                     else if (map.typeGrid[col][row]===2)
                     {
-                        renderImage = "images/dark_gray_30_30_left_bottom.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_gray_30_30_left_bottom.png";
                     }
                     else if (map.typeGrid[col][row]===3)
                     {
-                        renderImage = "images/dark_gray_30_30_right_bottom.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_gray_30_30_right_bottom.png";
                     }
                     else if (map.typeGrid[col][row]===4)
                     {
-                        renderImage = "images/dark_gray_30_30_top_right.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_gray_30_30_top_right.png";
                     }
                     else
                     {
-                        renderImage = "images/dark_gray_30_30.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_gray_30_30.png";
                     }
 
                     ctx.drawImage(Resources.get(renderImage), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
@@ -226,23 +228,23 @@ var Engine = (function(global) {
                     var renderImage;
                     if (map.typeGrid[col][row]===1)
                     {
-                        renderImage = "images/dark_orange_30_30_top_left.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_orange_30_30_top_left.png";
                     }
                     else if (map.typeGrid[col][row]===2)
                     {
-                        renderImage = "images/dark_orange_30_30_left_bottom.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_orange_30_30_left_bottom.png";
                     }
                     else if (map.typeGrid[col][row]===3)
                     {
-                        renderImage = "images/dark_orange_30_30_bottom_right.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_orange_30_30_bottom_right.png";
                     }
                     else if (map.typeGrid[col][row]===4)
                     {
-                        renderImage = "images/dark_orange_30_30_right_top.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_orange_30_30_right_top.png";
                     }
                     else
                     {
-                        renderImage = "images/dark_orange_30_30.png";
+                        renderImage = "https://lumines.herokuapp.com/images/dark_orange_30_30.png";
                     }
 
                     ctx.drawImage(Resources.get(renderImage), col * Board.BLOCK_SIZE, Board.BOARD_HEIGHT - Board.BLOCK_SIZE - row * Board.BLOCK_SIZE);
@@ -261,7 +263,7 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         bar.render();
-        ctx.drawImage(Resources.get('images/rowbar.png'), 0,60);
+        ctx.drawImage(Resources.get('https://lumines.herokuapp.com/images/rowbar.png'), 0,60);
         brick.render();
         leftFallingBrick.render();
         rightFallingBrick.render();
@@ -281,26 +283,26 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
-        'images/blue_30_30.png',
-        'images/gray_30_30.png',
-        'images/orange_30_30.png',
-        'images/gray_20_20.png',
-        'images/orange_20_20.png',
-        'images/blue_30_30.png',
-        'images/slidebar.png',
-        'images/dark_orange_30_30.png',
-        'images/dark_gray_30_30.png',
-        'images/nextbrickBG.png',
-        'images/white.png',
-        'images/rowbar.png',
-        'images/dark_gray_30_30_left_bottom.png',
-        'images/dark_gray_30_30_right_bottom.png',
-        'images/dark_gray_30_30_top_left.png',
-        'images/dark_gray_30_30_top_right.png',
-        'images/dark_orange_30_30_left_bottom.png',
-        'images/dark_orange_30_30_bottom_right.png',
-        'images/dark_orange_30_30_top_left.png',
-        'images/dark_orange_30_30_right_top.png'
+        'https://lumines.herokuapp.com/images/blue_30_30.png',
+        'https://lumines.herokuapp.com/images/gray_30_30.png',
+        'https://lumines.herokuapp.com/images/orange_30_30.png',
+        'https://lumines.herokuapp.com/images/gray_20_20.png',
+        'https://lumines.herokuapp.com/images/orange_20_20.png',
+        'https://lumines.herokuapp.com/images/blue_30_30.png',
+        'https://lumines.herokuapp.com/images/slidebar.png',
+        'https://lumines.herokuapp.com/images/dark_orange_30_30.png',
+        'https://lumines.herokuapp.com/images/dark_gray_30_30.png',
+        'https://lumines.herokuapp.com/images/nextbrickBG.png',
+        'https://lumines.herokuapp.com/images/white.png',
+        'https://lumines.herokuapp.com/images/rowbar.png',
+        'https://lumines.herokuapp.com/images/dark_gray_30_30_left_bottom.png',
+        'https://lumines.herokuapp.com/images/dark_gray_30_30_right_bottom.png',
+        'https://lumines.herokuapp.com/images/dark_gray_30_30_top_left.png',
+        'https://lumines.herokuapp.com/images/dark_gray_30_30_top_right.png',
+        'https://lumines.herokuapp.com/images/dark_orange_30_30_left_bottom.png',
+        'https://lumines.herokuapp.com/images/dark_orange_30_30_bottom_right.png',
+        'https://lumines.herokuapp.com/images/dark_orange_30_30_top_left.png',
+        'https://lumines.herokuapp.com/images/dark_orange_30_30_right_top.png'
     ]);
     Resources.onReady(init);
 
