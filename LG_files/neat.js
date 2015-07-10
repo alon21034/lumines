@@ -8,7 +8,7 @@
     return 2 / (1 + Math.exp(-4.9*x)) - 1;
   }
 
-  var Population = 300;
+  var Population = 600;
   var DeltaDisjoint = 2.0;
   var DeltaWeights = 0.4;
   var DeltaThreshold = 1.0;
