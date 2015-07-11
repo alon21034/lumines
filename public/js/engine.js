@@ -68,6 +68,14 @@ var Engine = (function(global) {
          */
         if(game.status === true)
         {
+            game.frameId ++;
+            if (computerAI.enabled && game.frameId % 5 == 0) {
+              var key = computerAI.decide(game, map, brick, bar);
+              if (key != -1) {
+                brick.handleInput(key);
+              }
+            }
+
             update(dt);
             render();
         }

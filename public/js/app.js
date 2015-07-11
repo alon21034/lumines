@@ -38,6 +38,7 @@ function startTimer(duration, display) {
 
 var Game = function()
 {
+    this.frameId = 0;
     this.status = true;
     this.renderNextFive = false;
     this.score = 0;
@@ -97,6 +98,7 @@ Game.prototype.restart = function()
     leftFallingBrick.clear();
     rightFallingBrick.clear();
     this.score = 0;
+    this.frameId = 0;
     this.pause = false;
     game.status = true;
 }
